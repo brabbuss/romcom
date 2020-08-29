@@ -1,7 +1,7 @@
 // Create variables targetting the relevant DOM elements here 👇
 var coverImage = document.querySelector('.cover-image');
 var coverTitle = document.querySelector('.cover-title');
-var coverDescriptor = document.querySelector('.tagline');
+var coverTagline = document.querySelector('.tagline');
 var showRandomCoverButton = document.querySelector('.random-cover-button');
 var makeOwnCover = document.querySelector('.make-new-button');
 var formView = document.querySelector('.form-view');
@@ -16,19 +16,36 @@ var userTitleInput = document.querySelector('#title')
 var userDescriptor1Input = document.querySelector('#descriptor1')
 var userDescriptor2Input = document.querySelector('#descriptor2')
 var userCreateNewCoverButton = document.querySelector('.create-new-book-button')
+
+var savedCoversSection = document.querySelector('.saved-covers-section')
+var taglineArray = []
+
 // We've provided a few variables below
 var savedCovers = [
   new Cover("http://3.bp.blogspot.com/-iE4p9grvfpQ/VSfZT0vH2UI/AAAAAAAANq8/wwQZssi-V5g/s1600/Do%2BNot%2BForsake%2BMe%2B-%2BImage.jpg", "Sunsets and Sorrows", "sunsets", "sorrows")
 ];
 var currentCover;
 var userNewBookCover;
+// var currentCustomCover = [];
 
 // Add your event listeners here 👇
 showRandomCoverButton.addEventListener('click', displayNewCover);
 makeOwnCover.addEventListener('click', unhideFormView);
-savedViewButton.addEventListener('click', unhideSavedView);
+savedViewButton.addEventListener('click',() => {
+  unhideSavedView();
+  // loadSavedCovers();
+});
 homeViewButton.addEventListener('click', unhideHomeView);
-userCreateNewCoverButton.addEventListener('click', saveUserNewCoverData);
+userCreateNewCoverButton.addEventListener('click',() => {
+  saveUserNewCoverData();
+  createUserNewCover();
+  unhideHomeView();
+});
+saveCoverButton.addEventListener('click',() => {
+  saveCurrentCover();
+  deleteDuplicateCover()
+});
+
 // Create your event handlers and other functions here 👇
 function getRandomIndex(bookItem) {
   var randomIndex = Math.floor(Math.random() * bookItem.length)
@@ -49,10 +66,11 @@ function displayNewCover() {
   var newCoverItem = createNewCover()
   coverImage.src = newCoverItem.cover
   coverTitle.textContent = newCoverItem.title
-  coverDescriptor.textContent = `A tale of ${newCoverItem.tagline1} and ${newCoverItem.tagline2}`
+  coverTagline.textContent = `A tale of ${newCoverItem.tagline1} and ${newCoverItem.tagline2}`
 }
 
 function unhideFormView() {
+  savedView.style.display = 'none'
   formView.style.display = 'block'
   homeView.style.display = 'none'
   showRandomCoverButton.style.display = 'none'
@@ -90,17 +108,84 @@ function saveUserNewCoverData() {
   titles.push(userTitleInput.value)
   covers.push(userCoverInput.value)
   descriptors.push(userDescriptor1Input.value, userDescriptor2Input.value)
-  createUserNewCover()
-  unhideHomeView()
   event.preventDefault();
 }
 
 function createUserNewCover() {
-  userNewBookCover = new Cover (covers[covers.length-1], titles[titles.length-1], descriptors[descriptors.length-2], descriptors[descriptors.length-1])
+  userNewBookCover = new Cover(covers[covers.length-1], titles[titles.length-1], descriptors[descriptors.length-2], descriptors[descriptors.length-1])
   coverImage.src = userNewBookCover.cover
   coverTitle.textContent = userNewBookCover.title
-  coverDescriptor.textContent = `A tale of ${userNewBookCover.tagline1} and ${userNewBookCover.tagline2}`
-  return userNewBookCover
+  coverTagline.textContent = `A tale of ${userNewBookCover.tagline1} and ${userNewBookCover.tagline2}`
+  // if (currentCustomCover === []) {
+  //     currentCustomCover.push(userNewBookCover)
+  // }
 }
 
-displayNewCover()
+function deleteDuplicateCover() {
+  var workingEmptyArray = []
+  for (i = 0; i < savedCovers.length - 1; i++) {
+    var bookValues = Object.values(savedCovers[i])
+    var newBookValues = Object.values(savedCovers[savedCovers.length - 1])
+    for (j = 1; j < bookValues.length; j++) {
+      if (bookValues[j] === newBookValues[j]) {
+        workingEmptyArray.push(bookValues[j])
+      }
+    }
+  }
+  if (workingEmptyArray.length === 4) {
+    savedCovers.pop()
+  }
+}
+
+function createSavedBookCover(index) {
+    var img = document.createElement('IMG');   // CAPITALIZED to invoke
+    img.src = covers[index];
+    var title = document.createElement('H2');
+    title.innerText = ""
+    var descriptor = document.createElement('H3');
+    descriptor.innerText = ""
+    return img;
+}
+
+function loadSavedCovers() {
+  for (i = 0; i < savedCovers.length; i++) {
+    if (savedCovers[i].cover !== createSavedBookCover(i)) {
+      savedCoversSection.appendChild(createSavedBookCover(i)) 
+    }
+  }
+}
+
+// function loadSavedCovers() {
+//   for (i = 0; i < savedCovers.length; i++) {
+//     if (Object.values(savedCovers[i] === Object.values(createSavedBookCover(i)))) {
+//       savedCoversSection.appendChild(createSavedBookCover(i)) 
+//     }
+//   }
+// }
+
+// saveCurrentCover() for saving current homepage cover into savedCovers array
+// splitTagline() pushed descriptors into array, this fxn uses them and
+// then cleans the array out with .splice()
+function saveCurrentCover() {
+  splitTagline()
+  var homeCurrentCover = new Cover(coverImage.src, coverTitle.textContent, taglineArray[0], taglineArray[1])
+  savedCovers.push(homeCurrentCover)
+  return cleanTempArrays()
+}
+
+function cleanTempArrays() {
+  taglineArray.splice(0,2)
+  // currentCustomCover.splice(0,1)
+}
+
+function testDisplayCovers() {
+  savedCoversSection.appendChild(homeCurrentCover)
+}
+// splitTagline() fxn inside of saveCurrentCover(). split tagline to save desc1 and desc2
+function splitTagline() {
+  var taglineWordCount = coverTagline.textContent.split(" ")
+  return taglineArray.push(taglineWordCount[3], taglineWordCount[5])
+}
+
+displayNewCover();
+loadSavedCovers();
