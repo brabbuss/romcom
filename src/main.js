@@ -26,6 +26,7 @@ var savedCovers = [
 ];
 var currentCover;
 var userNewBookCover;
+var homeCurrentCover;
 // var currentCustomCover = [];
 
 // Add your event listeners here 👇
@@ -116,9 +117,6 @@ function createUserNewCover() {
   coverImage.src = userNewBookCover.cover
   coverTitle.textContent = userNewBookCover.title
   coverTagline.textContent = `A tale of ${userNewBookCover.tagline1} and ${userNewBookCover.tagline2}`
-  // if (currentCustomCover === []) {
-  //     currentCustomCover.push(userNewBookCover)
-  // }
 }
 
 function deleteDuplicateCover() {
@@ -137,49 +135,32 @@ function deleteDuplicateCover() {
   }
 }
 
-function createSavedBookCover(index) {
-    var img = document.createElement('IMG');   // CAPITALIZED to invoke
-    img.src = covers[index];
-    var title = document.createElement('H2');
-    title.innerText = ""
-    var descriptor = document.createElement('H3');
-    descriptor.innerText = ""
-    return img;
-}
-
 function loadSavedCovers() {
-  for (i = 0; i < savedCovers.length; i++) {
-    if (savedCovers[i].cover !== createSavedBookCover(i)) {
-      savedCoversSection.appendChild(createSavedBookCover(i)) 
-    }
-  }
+  var miniCoverBlock =
+  `
+  <div class="mini-cover">
+    <img class="mini-cover" src="${homeCurrentCover.cover}">
+    <h2 class="cover-title cover-title::first-letter">${homeCurrentCover.title}</h2>
+    <h3 class="tagline">A tale of ${homeCurrentCover.tagline1} and ${homeCurrentCover.tagline2}</h3>
+  </div>
+  `
+  savedCoversSection.insertAdjacentHTML("afterbegin", miniCoverBlock)
 }
-
-// function loadSavedCovers() {
-//   for (i = 0; i < savedCovers.length; i++) {
-//     if (Object.values(savedCovers[i] === Object.values(createSavedBookCover(i)))) {
-//       savedCoversSection.appendChild(createSavedBookCover(i)) 
-//     }
-//   }
-// }
 
 // saveCurrentCover() for saving current homepage cover into savedCovers array
 // splitTagline() pushed descriptors into array, this fxn uses them and
 // then cleans the array out with .splice()
 function saveCurrentCover() {
   splitTagline()
-  var homeCurrentCover = new Cover(coverImage.src, coverTitle.textContent, taglineArray[0], taglineArray[1])
+  homeCurrentCover = new Cover(coverImage.src, coverTitle.textContent, taglineArray[0], taglineArray[1])
   savedCovers.push(homeCurrentCover)
+  loadSavedCovers()
   return cleanTempArrays()
 }
 
 function cleanTempArrays() {
   taglineArray.splice(0,2)
   // currentCustomCover.splice(0,1)
-}
-
-function testDisplayCovers() {
-  savedCoversSection.appendChild(homeCurrentCover)
 }
 // splitTagline() fxn inside of saveCurrentCover(). split tagline to save desc1 and desc2
 function splitTagline() {
@@ -188,4 +169,3 @@ function splitTagline() {
 }
 
 displayNewCover();
-loadSavedCovers();
