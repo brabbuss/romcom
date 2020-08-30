@@ -29,6 +29,7 @@ makeOwnCover.addEventListener('click', unhideFormView);
 savedViewButton.addEventListener('click', unhideSavedView);
 homeViewButton.addEventListener('click', unhideHomeView);
 userCreateNewCoverButton.addEventListener('click', saveUserNewCoverData);
+saveCoverButton.addEventListener('click', saveUserNewCover);
 // Create your event handlers and other functions here 👇
 function getRandomIndex(bookItem) {
   var randomIndex = Math.floor(Math.random() * bookItem.length)
@@ -103,4 +104,33 @@ function createUserNewCover() {
   return userNewBookCover
 }
 
+function saveUserNewCover() {
+  savedCovers.push(userNewBookCover)
+  unhideSavedView()
+  deleteDuplicateCover()
+}
+
+function deleteDuplicateCover() {
+  var workingEmptyArray = []
+  for (i = 0; i < savedCovers.length - 1; i++) {
+    var bookValues = Object.values(savedCovers[i])
+    var newBookValues = Object.values(savedCovers[savedCovers.length - 1])
+    for (j = 1; j < bookValues.length; j++) {
+      if (bookValues[j] === newBookValues[j]) {
+        workingEmptyArray.push(bookValues[j])
+      }
+    }
+  }
+  if (workingEmptyArray.length === 4) {
+    savedCovers.pop()
+  }
+}
+
 displayNewCover()
+
+// if (savedCovers[i].cover === userNewBookCover.cover
+//   && savedCovers[i].title === userNewBookCover.title
+//   && savedCovers[i].tagline1 === userNewBookCover.tagline1
+//   && savedCovers[i].tagline2 === userNewBookCover.tagline2) {
+//   savedCovers.pop(userNewBookCover)
+// }
