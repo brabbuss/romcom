@@ -1,7 +1,7 @@
 // Create variables targetting the relevant DOM elements here 👇
 var coverImage = document.querySelector('.cover-image');
 var coverTitle = document.querySelector('.cover-title');
-var coverDescriptor = document.querySelector('.tagline');
+var coverTagline = document.querySelector('.tagline');
 var showRandomCoverButton = document.querySelector('.random-cover-button');
 var makeOwnCover = document.querySelector('.make-new-button');
 var formView = document.querySelector('.form-view');
@@ -16,20 +16,37 @@ var userTitleInput = document.querySelector('#title')
 var userDescriptor1Input = document.querySelector('#descriptor1')
 var userDescriptor2Input = document.querySelector('#descriptor2')
 var userCreateNewCoverButton = document.querySelector('.create-new-book-button')
+
+var savedCoversSection = document.querySelector('.saved-covers-section')
+var taglineArray = []
+
 // We've provided a few variables below
 var savedCovers = [
   new Cover("http://3.bp.blogspot.com/-iE4p9grvfpQ/VSfZT0vH2UI/AAAAAAAANq8/wwQZssi-V5g/s1600/Do%2BNot%2BForsake%2BMe%2B-%2BImage.jpg", "Sunsets and Sorrows", "sunsets", "sorrows")
 ];
 var currentCover;
 var userNewBookCover;
+var homeCurrentCover;
+// var currentCustomCover = [];
 
 // Add your event listeners here 👇
 showRandomCoverButton.addEventListener('click', displayNewCover);
 makeOwnCover.addEventListener('click', unhideFormView);
-savedViewButton.addEventListener('click', unhideSavedView);
+savedViewButton.addEventListener('click',() => {
+  unhideSavedView();
+  // loadSavedCovers();
+});
 homeViewButton.addEventListener('click', unhideHomeView);
-userCreateNewCoverButton.addEventListener('click', saveUserNewCoverData);
-saveCoverButton.addEventListener('click', saveUserNewCover);
+userCreateNewCoverButton.addEventListener('click',() => {
+  saveUserNewCoverData();
+  createUserNewCover();
+  unhideHomeView();
+});
+saveCoverButton.addEventListener('click',() => {
+  saveCurrentCover();
+  deleteDuplicateCover()
+});
+
 // Create your event handlers and other functions here 👇
 function getRandomIndex(bookItem) {
   var randomIndex = Math.floor(Math.random() * bookItem.length)
@@ -50,10 +67,11 @@ function displayNewCover() {
   var newCoverItem = createNewCover()
   coverImage.src = newCoverItem.cover
   coverTitle.textContent = newCoverItem.title
-  coverDescriptor.textContent = `A tale of ${newCoverItem.tagline1} and ${newCoverItem.tagline2}`
+  coverTagline.textContent = `A tale of ${newCoverItem.tagline1} and ${newCoverItem.tagline2}`
 }
 
 function unhideFormView() {
+  savedView.style.display = 'none'
   formView.style.display = 'block'
   homeView.style.display = 'none'
   showRandomCoverButton.style.display = 'none'
@@ -91,23 +109,14 @@ function saveUserNewCoverData() {
   titles.push(userTitleInput.value)
   covers.push(userCoverInput.value)
   descriptors.push(userDescriptor1Input.value, userDescriptor2Input.value)
-  createUserNewCover()
-  unhideHomeView()
   event.preventDefault();
 }
 
 function createUserNewCover() {
-  userNewBookCover = new Cover (covers[covers.length-1], titles[titles.length-1], descriptors[descriptors.length-2], descriptors[descriptors.length-1])
+  userNewBookCover = new Cover(covers[covers.length-1], titles[titles.length-1], descriptors[descriptors.length-2], descriptors[descriptors.length-1])
   coverImage.src = userNewBookCover.cover
   coverTitle.textContent = userNewBookCover.title
-  coverDescriptor.textContent = `A tale of ${userNewBookCover.tagline1} and ${userNewBookCover.tagline2}`
-  return userNewBookCover
-}
-
-function saveUserNewCover() {
-  savedCovers.push(userNewBookCover)
-  unhideSavedView()
-  deleteDuplicateCover()
+  coverTagline.textContent = `A tale of ${userNewBookCover.tagline1} and ${userNewBookCover.tagline2}`
 }
 
 function deleteDuplicateCover() {
@@ -126,11 +135,37 @@ function deleteDuplicateCover() {
   }
 }
 
-displayNewCover()
+function loadSavedCovers() {
+  var miniCoverBlock =
+  `
+  <div class="mini-cover">
+    <img class="mini-cover" src="${homeCurrentCover.cover}">
+    <h2 class="cover-title cover-title::first-letter">${homeCurrentCover.title}</h2>
+    <h3 class="tagline">A tale of ${homeCurrentCover.tagline1} and ${homeCurrentCover.tagline2}</h3>
+  </div>
+  `
+  savedCoversSection.insertAdjacentHTML("afterbegin", miniCoverBlock)
+}
 
-// if (savedCovers[i].cover === userNewBookCover.cover
-//   && savedCovers[i].title === userNewBookCover.title
-//   && savedCovers[i].tagline1 === userNewBookCover.tagline1
-//   && savedCovers[i].tagline2 === userNewBookCover.tagline2) {
-//   savedCovers.pop(userNewBookCover)
-// }
+// saveCurrentCover() for saving current homepage cover into savedCovers array
+// splitTagline() pushed descriptors into array, this fxn uses them and
+// then cleans the array out with .splice()
+function saveCurrentCover() {
+  splitTagline()
+  homeCurrentCover = new Cover(coverImage.src, coverTitle.textContent, taglineArray[0], taglineArray[1])
+  savedCovers.push(homeCurrentCover)
+  loadSavedCovers()
+  return cleanTempArrays()
+}
+
+function cleanTempArrays() {
+  taglineArray.splice(0,2)
+  // currentCustomCover.splice(0,1)
+}
+// splitTagline() fxn inside of saveCurrentCover(). split tagline to save desc1 and desc2
+function splitTagline() {
+  var taglineWordCount = coverTagline.textContent.split(" ")
+  return taglineArray.push(taglineWordCount[3], taglineWordCount[5])
+}
+
+displayNewCover();
