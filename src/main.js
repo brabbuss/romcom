@@ -37,6 +37,7 @@ savedViewButton.addEventListener('click',() => {
   // loadSavedCovers();
 });
 homeViewButton.addEventListener('click', unhideHomeView);
+
 userCreateNewCoverButton.addEventListener('click',() => {
   saveUserNewCoverData();
   createUserNewCover();
@@ -45,6 +46,7 @@ userCreateNewCoverButton.addEventListener('click',() => {
 saveCoverButton.addEventListener('click',() => {
   saveCurrentCover();
   deleteDuplicateCover()
+
 });
 
 // Create your event handlers and other functions here 👇
@@ -169,3 +171,4 @@ function splitTagline() {
 }
 
 displayNewCover();
+
