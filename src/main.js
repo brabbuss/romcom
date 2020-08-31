@@ -48,7 +48,7 @@ saveCoverButton.addEventListener('click',() => {
   deleteDuplicateCover()
 
 });
-
+savedCoversSection.addEventListener('dblclick', removeCover, false);
 // Create your event handlers and other functions here 👇
 function getRandomIndex(bookItem) {
   var randomIndex = Math.floor(Math.random() * bookItem.length)
@@ -189,4 +189,11 @@ function splitTagline() {
   return taglineArray.push(taglineWordCount[3], taglineWordCount[5])
 }
 
+function removeCover(element) {
+  if (element.target !== element.currentTarget) {
+        var clickedItem = document.querySelector('.mini-cover');
+        clickedItem.remove();
+    }
+    element.stopPropagation();
+}
 displayNewCover();
