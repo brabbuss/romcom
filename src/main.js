@@ -34,7 +34,7 @@ showRandomCoverButton.addEventListener('click', displayNewCover);
 makeOwnCover.addEventListener('click', unhideFormView);
 savedViewButton.addEventListener('click',() => {
   unhideSavedView();
-  // loadSavedCovers();
+  loadSavedCovers();
 });
 homeViewButton.addEventListener('click', unhideHomeView);
 
@@ -138,25 +138,44 @@ function deleteDuplicateCover() {
 }
 
 function loadSavedCovers() {
-  var miniCoverBlock =
-  `
-  <div class="mini-cover">
-    <img class="mini-cover" src="${homeCurrentCover.cover}">
-    <h2 class="cover-title cover-title::first-letter">${homeCurrentCover.title}</h2>
-    <h3 class="tagline">A tale of ${homeCurrentCover.tagline1} and ${homeCurrentCover.tagline2}</h3>
-  </div>
-  `
-  savedCoversSection.insertAdjacentHTML("afterbegin", miniCoverBlock)
+
+  cleanViewCoversPage()
+
+  var coversList = savedCovers.map(function (element) { return element.cover; });
+  var coversTitle = savedCovers.map(function (element) { return element.title; });
+  var coversTagline1 = savedCovers.map(function (element) { return element.tagline1; });
+  var coversTagline2 = savedCovers.map(function (element) { return element.tagline2; });
+
+  for (var l = 0; l < coversList.length; l++){
+    var coverElement = coversList[l]
+    var titleElement = coversTitle[l]
+    var tagline1Element = coversTagline1[l]
+    var tagline2Element = coversTagline2[l]
+
+    var miniCoverBlock =
+    `
+    <div class="mini-cover">
+      <img class="mini-cover" src="${coverElement}">
+      <h2 class="cover-title cover-title::first-letter">${titleElement}</h2>
+      <h3 class="tagline">A tale of ${tagline1Element} and ${tagline2Element}</h3>
+    </div>
+    `
+    savedCoversSection.insertAdjacentHTML("afterbegin", miniCoverBlock)
+  }
+}
+
+function cleanViewCoversPage() {
+        savedCoversSection.innerHTML = ""
 }
 
 // saveCurrentCover() for saving current homepage cover into savedCovers array
 // splitTagline() pushed descriptors into array, this fxn uses them and
 // then cleans the array out with .splice()
+
 function saveCurrentCover() {
   splitTagline()
   homeCurrentCover = new Cover(coverImage.src, coverTitle.textContent, taglineArray[0], taglineArray[1])
   savedCovers.push(homeCurrentCover)
-  loadSavedCovers()
   return cleanTempArrays()
 }
 
@@ -171,4 +190,3 @@ function splitTagline() {
 }
 
 displayNewCover();
-
