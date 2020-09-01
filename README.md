@@ -18,10 +18,14 @@ The site lets users generate random book covers that pull from an array of prese
 * [Create Custom Cover](#Create-Custom-Cover)
 * [Save Current Cover](#Save-Current-Cover)
 * [View Saved Covers](#View-Saved-Covers)
+* [Double Click to Delete Saved Cover](#Double-Click-to-Delete-Saved-Cover)
 * [Roadmap](#to-do)
 
 #### Generate Random Cover
 Upon page load, a random cover will be generated, drawing on an array of titles, cover images and tagline descriptors 'under the hood'. Clicking on "Show new random cover" in the navigation bar at the top of the site will generate - you guessed it - a new, random book cover!
+
+*Under the Hood*
+A database of assetts for the random covers (image files, titles, and tagline descriptors) was already provided at outset of the project, which is what is drawn upon to create the cover on page load/refresh. That being said, additional assetts are added dynamically to the respective arrays upon creation of a custom cover - the inputted data is stored away and can now be drawn upon when generating random covers. To assemble a random cover upon click of the random cover button, an event listener was assigned to the button. Upon click, an assett is chosen at random from each of the arrays for the corresponding cover elements and injected into a new Class object - the new cover. It is then displayed on the home page by reassigning the corresponding HTML elements, which are targeted with the `document.querySelector()` method.
 
 #### Create Custom Cover
 Users can create their very own custom cover! Clicking "Make Your Own Cover" in the nav bar will take the user to a screen with four input fields:
@@ -34,17 +38,34 @@ Users can create their very own custom cover! Clicking "Make Your Own Cover" in 
 
 After filling in these fields, click the "Make my book" button at the bottom of the page to generate and view the custom cover. Click "Save Cover" in the navigation bar to save the cover to an array of saved covers.
 
+*Under the Hood*
+Input fields are cleared when loading the 'make your own cover' section by setting the value of those fields to empty strings. Event listeners are attached to each input field. The value of those input fields, upon click of the 'make my book' button, are stored in their respective data arrays (i.e. value of "Cover" input will be stored in the "covers" data array, within the linked "data.js" file, etc.) with a `.push()` method. Those pieces of information are then drawn on to use in the creation of a new Class object, a new cover, which is then displayed on the home page. 
+
 #### Save Current Cover
 The "Save Cover" button in the nav bar will save the current random or user generated cover to an array of saved covers. These saved covers can be accessed in the "View Saved Covers" section at any time.
+
+*Under the Hood*
+Using event listeners, corresponding information (values) from the various elements of the currently viewed book cover are pulled and then injected into the the creation of a new Class object (our book cover), which is then stored in an array of saved covers (`savedCovers`) to draw upon later (for viewing saved covers). Inside of this save cover function, a separate function was needed to pull two pieces of data (`descriptor1` and `descriptor2`) from the tagline string. This was accomplished by splitting the tagline string into an array of strings, and pulling the descriptors by their new index positions within that array (for our  tagline, positions [3] and [5]). Duplicates within the `savedCovers` array are avoided with a separate function. That function compares the key values of the cover being saved against the covers that have been saved in the `savedCovers` array - if all of the key values (other than the unique `id`) of the cover being saved match up with any of the object key values in the `savedCovers` array, then that is a duplicate cover and it is prevented from being added to the array. 
 
 #### View Saved Covers
 Navigate to the "View Saved Covers" section by clicking the "View Saved Covers" button in the navigation bar. This section will display all covers that were previously saved with the "Save Cover" function (clicking the "Save Cover" button). *It is important to note that all saved covers will be cleared if the page is refreshed*
 
 ![Generating random covers, saving covers, and viewing saved covers](https://media.giphy.com/media/H1HOmpNBG5Od9id6e1/giphy.gif)
 
+*Under the Hood*
+To prevent duplicate covers from displaying, the team decided to clear HTML elements composing the displayed list of saved covers - which would be leftover from any previous visit to the saved covers section. With the section cleared, a `for loop` is used to iterate through the `savedCovers` array and inject the key values of the cover object at index [i] into the corresponding HTML elements (which are targeted with the `.querySelector()` method). Those elements are then inserted into the HTML using the `insertAdjacentHTML()` method.
+
+#### Double Click to Delete Saved Cover
+In the "View Saved Covers" section, double-clicking directly on the saved cover the user wishes to delete will remove thaqt cover from the view and remove it from the array containing the date of that saved cover.
+
+*Under the Hood*
+
+
 #### Roadmap
-* In future iterations, to be able to delete any saved cover by double-clicking the cover
-  * The team was able to implement functionality to delete a cover upon double-clicking, however there were bugs that were not able to be squashed by the project due date
+* In the next iteration, we hope to add:
+ * Ability to enlarge view of saved cover by clicking on it
+ * Re-order saved covers by clicking and dragging
+ * Error validation in the make custom cover section
 
 ## Contributors
 
