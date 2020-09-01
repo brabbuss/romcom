@@ -26,8 +26,7 @@ Upon page load, a random cover will be generated, drawing on an array of titles,
 ### Create Custom Cover
 Users can create their very own custom cover! Clicking "Make Your Own Cover" in the nav bar will take the user to a screen with four input fields:
 
-![Animated gif of custom cover creation]
-(https://giphy.com/gifs/YqzT1CKSOOmqqwwO6Y/html5)
+![Animated gif of custom cover creation](https://giphy.com/gifs/YqzT1CKSOOmqqwwO6Y/html5)
 
 * **Cover** - In this field, enter the url for an image you'd like to use as your cover image
 * **Title** - Enter the desired title for the custom cover. The title will be displayed on the book cover
@@ -41,17 +40,14 @@ The "Save Cover" button in the nav bar will save the current random or user gene
 ### View Saved Covers
 Navigate to the "View Saved Covers" section by clicking the "View Saved Covers" button in the navigation bar. This section will display all covers that were previously saved with the "Save Cover" function (clicking the "Save Cover" button). *It is important to note that all saved covers will be cleared if the page is refreshed*
 
-![Generating random covers, saving covers, and viewing saved covers]
-(https://media.giphy.com/media/H1HOmpNBG5Od9id6e1/giphy.gif)
+![Generating random covers, saving covers, and viewing saved covers](https://media.giphy.com/media/H1HOmpNBG5Od9id6e1/giphy.gif)
 
 ### Roadmap
 * In future iterations, to be able to delete any saved cover by double-clicking the cover
   * The team was able to implement functionality to delete a cover upon double-clicking, however there were bugs that were not able to be squashed by the project due date
 
 ## Contributors
-![Coding Mermaid]
-(https://avatars0.githubusercontent.com/u/66269306?s=400&u=b59f8ccc1002269319d952aa028ee270629b2ead&v=4)
+![Coding Mermaid](https://avatars0.githubusercontent.com/u/66269306?s=400&u=b59f8ccc1002269319d952aa028ee270629b2ead&v=4)
 Olga Morgan - [GitHub Profile](https://github.com/scripka)
-![Coding Merman]
-(https://avatars1.githubusercontent.com/u/66697338?s=460&u=3d2e338fdeb625c1940a87b1cfdb7ba6e7d16c5c&v=4)
+![Coding Merman](https://avatars1.githubusercontent.com/u/66697338?s=460&u=3d2e338fdeb625c1940a87b1cfdb7ba6e7d16c5c&v=4)
 Scott Brabson[GitHub Profile](https://github.com/brabbuss)
