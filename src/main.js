@@ -53,8 +53,6 @@ saveCoverButton.addEventListener('click',() => {
 
 })
 
-savedCoversSection.addEventListener('dblclick', removeCover, false)
-
 // Create your event handlers and other functions here 👇
 function getRandomIndex(bookItem) {
   var randomIndex = Math.floor(Math.random() * bookItem.length)
@@ -106,7 +104,7 @@ function unhideSavedView() {
 function unhideHomeView() {
   displayViewSettings = {
     savedView: 'none',
-    formView: 'block',
+    formView: 'none',
     homeView: 'block',
     showRandomCoverButton: 'block',
     saveCoverButton: 'block',
@@ -194,14 +192,6 @@ function cleanTempArrays() {
 function splitTagline() {
   var taglineWordCount = coverTagline.textContent.split(" ")
   return taglineArray.push(taglineWordCount[3], taglineWordCount[5])
-}
-
-function removeCover(element) {
-  if (element.target !== element.currentTarget) {
-        var clickedItem = document.querySelector('.mini-cover')
-        clickedItem.remove()
-  }
-    element.stopPropagation()
 }
 
 
