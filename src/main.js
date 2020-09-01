@@ -10,10 +10,6 @@ var savedViewButton = document.querySelector('.view-saved-button')
 var makeOwnCoverButton = document.querySelector('.make-new-button')
 var userCreateNewCoverButton = document.querySelector('.create-new-book-button')
 
-var formView = document.querySelector('.form-view')
-var homeView = document.querySelector('.home-view')
-var savedView = document.querySelector('.saved-view')
-
 var userCoverInput = document.querySelector('#cover')
 var userTitleInput = document.querySelector('#title')
 var userDescriptor1Input = document.querySelector('#descriptor1')
@@ -25,22 +21,20 @@ var savedCoversSection = document.querySelector('.saved-covers-section')
 var savedCovers = [
   new Cover("http://3.bp.blogspot.com/-iE4p9grvfpQ/VSfZT0vH2UI/AAAAAAAANq8/wwQZssi-V5g/s1600/Do%2BNot%2BForsake%2BMe%2B-%2BImage.jpg", "Sunsets and Sorrows", "sunsets", "sorrows")
 ];
-var currentCover
-var userNewBookCover
-var homeCurrentCover
 var taglineArray = []
 var displayViewSettings = {}
-var coverIdNumber = 0
 
 // Add your event listeners here 👇
 showRandomCoverButton.addEventListener('click', displayNewCover)
+
 makeOwnCoverButton.addEventListener('click', unhideFormView)
+
+homeViewButton.addEventListener('click', unhideHomeView)
+
 savedViewButton.addEventListener('click',() => {
   unhideSavedView()
   loadSavedCovers()
 })
-
-homeViewButton.addEventListener('click', unhideHomeView)
 
 userCreateNewCoverButton.addEventListener('click',() => {
   saveUserNewCoverData()
@@ -51,7 +45,6 @@ userCreateNewCoverButton.addEventListener('click',() => {
 saveCoverButton.addEventListener('click',() => {
   saveCurrentCover()
   deleteDuplicateCover()
-
 })
 
 // Create your event handlers and other functions here 👇
@@ -61,7 +54,7 @@ function getRandomIndex(bookItem) {
 }
 
 function createNewCover() {
-  currentCover = new Cover(getRandomIndex(covers), getRandomIndex(titles), getRandomIndex(descriptors), getRandomIndex(descriptors))
+  var currentCover = new Cover(getRandomIndex(covers), getRandomIndex(titles), getRandomIndex(descriptors), getRandomIndex(descriptors))
   var tagline1 = getRandomIndex(descriptors)
   var tagline2 = getRandomIndex(descriptors)
   while (tagline1 === tagline2) {
@@ -86,8 +79,8 @@ function unhideFormView() {
     saveCoverButton: 'none',
     homeViewButton: 'block',
   }
-switchPageViewsSettings(displayViewSettings)
-clearFields()
+  switchPageViewsSettings(displayViewSettings)
+  clearFields()
 }
 
 function unhideSavedView() {
@@ -115,6 +108,10 @@ function unhideHomeView() {
 }
 
 function switchPageViewsSettings(displayViewSettings) {
+  var formView = document.querySelector('.form-view')
+  var homeView = document.querySelector('.home-view')
+  var savedView = document.querySelector('.saved-view')
+
   savedView.style.display = displayViewSettings.savedView
   formView.style.display = displayViewSettings.formView
   homeView.style.display = displayViewSettings.homeView
@@ -138,7 +135,7 @@ function saveUserNewCoverData() {
 }
 
 function createUserNewCover() {
-  userNewBookCover = new Cover(covers[covers.length-1], titles[titles.length-1], descriptors[descriptors.length-2], descriptors[descriptors.length-1])
+  var userNewBookCover = new Cover(covers[covers.length-1], titles[titles.length-1], descriptors[descriptors.length-2], descriptors[descriptors.length-1])
   coverImage.src = userNewBookCover.cover
   coverTitle.textContent = userNewBookCover.title
   coverTagline.textContent = `A tale of ${userNewBookCover.tagline1} and ${userNewBookCover.tagline2}`
@@ -177,7 +174,7 @@ function loadSavedCovers() {
   coversList.forEach((divElement, i) => {
     divElement.addEventListener('dblclick', () =>  {
       divElement.remove()
-      coverIdNumber = divElement.id
+      var coverIdNumber = divElement.id
       removeCoverFromSavedCovers(coverIdNumber)
     })
   })
@@ -198,7 +195,7 @@ function cleanViewCoversPage() {
 
 function saveCurrentCover() {
   splitTagline()
-  homeCurrentCover = new Cover(coverImage.src, coverTitle.textContent, taglineArray[0], taglineArray[1])
+  var homeCurrentCover = new Cover(coverImage.src, coverTitle.textContent, taglineArray[0], taglineArray[1])
   savedCovers.push(homeCurrentCover)
   return cleanTempArrays()
 }
