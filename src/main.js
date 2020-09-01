@@ -30,6 +30,7 @@ var userNewBookCover
 var homeCurrentCover
 var taglineArray = []
 var displayViewSettings = {}
+var coverIdNumber = 0
 
 // Add your event listeners here 👇
 showRandomCoverButton.addEventListener('click', displayNewCover)
@@ -164,7 +165,7 @@ function loadSavedCovers() {
   savedCovers.forEach((cover, i) => {
     var miniCoverBlock =
      `
-      <div data-id="${cover.id}" class="mini-cover">
+      <div id="${cover.id}" class="mini-cover">
         <img class="mini-cover" src="${cover.cover}">
         <h2 class="cover-title cover-title::first-letter">${cover.title}</h2>
         <h3 class="tagline">A tale of ${cover.tagline1} and ${cover.tagline2}</h3>
@@ -172,6 +173,23 @@ function loadSavedCovers() {
       `
       savedCoversSection.insertAdjacentHTML("afterbegin", miniCoverBlock)
   })
+  var coversList = document.querySelectorAll(`div.mini-cover`)
+  coversList.forEach((divElement, i) => {
+    divElement.addEventListener('dblclick', () =>  {
+      divElement.remove()
+      coverIdNumber = divElement.id
+      removeCoverFromSavedCovers(coverIdNumber)
+    })
+  })
+}
+
+function removeCoverFromSavedCovers(coverId) {
+  for (var j = 0; j < savedCovers.length; j++){
+    var index = j
+    if (coverId == savedCovers[index].id){
+      savedCovers.splice(index, 1)
+    }
+  }
 }
 
 function cleanViewCoversPage() {
