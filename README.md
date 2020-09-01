@@ -80,13 +80,13 @@ A new document method was added to the `loadSavedCovers()` function that is resp
 ## Contributors
 
 <img src="https://avatars0.githubusercontent.com/u/66269306?s=400&u=b59f8ccc1002269319d952aa028ee270629b2ead&v=4" alt="Coding Mermaid"
- width="150" height="auto" />
-Olga Morgan
+ width="150" height="auto" />\
+**Olga Morgan**
 
 [GitHub Profile](https://github.com/scripka)
 
 <img src="https://avatars1.githubusercontent.com/u/66697338?s=460&u=3d2e338fdeb625c1940a87b1cfdb7ba6e7d16c5c&v=4" alt="Coding Merman"
- width="150" height="auto" />
-Scott Brabson
+ width="150" height="auto" />\
+**Scott Brabson**
 
 [GitHub Profile](https://github.com/brabbuss)
