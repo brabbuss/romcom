@@ -59,7 +59,7 @@ To prevent duplicate covers from displaying, the team decided to clear HTML elem
 In the "View Saved Covers" section, double-clicking directly on the saved cover the user wishes to delete will remove thaqt cover from the view and remove it from the array containing the date of that saved cover.
 
 *Under the Hood*
-
+A new document method was added to the `loadSavedCoevrs()` function that is responsible for creating a list of Nodes from the displayed covers on a **View Saved Covers** page. Using `forEach` method we apply a new double click event listener to each cover on the page. When the double click happens it triggers the `element.remove()` method that deletes the clicked element from the HTML storing the HTML element id in `coverIdNumber` variable. Then `removeCoverFromSavedCovers()` function uses the `coverIdNumber` to match with the cover id in a `savedCovers` array in order to remove the saved cover from the database. 
 
 #### Roadmap
 * In the next iteration, we hope to add:
