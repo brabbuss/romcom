@@ -1,54 +1,60 @@
 // Create variables targetting the relevant DOM elements here 👇
-var coverImage = document.querySelector('.cover-image');
-var coverTitle = document.querySelector('.cover-title');
-var coverTagline = document.querySelector('.tagline');
-var showRandomCoverButton = document.querySelector('.random-cover-button');
-var makeOwnCover = document.querySelector('.make-new-button');
-var formView = document.querySelector('.form-view');
-var homeView = document.querySelector('.home-view');
-var saveCoverButton = document.querySelector('.save-cover-button');
-var homeViewButton = document.querySelector('.home-button');
-var savedViewButton = document.querySelector('.view-saved-button');
-var savedView = document.querySelector('.saved-view');
+var coverImage = document.querySelector('.cover-image')
+var coverTitle = document.querySelector('.cover-title')
+var coverTagline = document.querySelector('.tagline')
+
+var showRandomCoverButton = document.querySelector('.random-cover-button')
+var saveCoverButton = document.querySelector('.save-cover-button')
+var homeViewButton = document.querySelector('.home-button')
+var savedViewButton = document.querySelector('.view-saved-button')
+var makeOwnCoverButton = document.querySelector('.make-new-button')
+var userCreateNewCoverButton = document.querySelector('.create-new-book-button')
+
+var formView = document.querySelector('.form-view')
+var homeView = document.querySelector('.home-view')
+var savedView = document.querySelector('.saved-view')
 
 var userCoverInput = document.querySelector('#cover')
 var userTitleInput = document.querySelector('#title')
 var userDescriptor1Input = document.querySelector('#descriptor1')
 var userDescriptor2Input = document.querySelector('#descriptor2')
-var userCreateNewCoverButton = document.querySelector('.create-new-book-button')
 
 var savedCoversSection = document.querySelector('.saved-covers-section')
-var taglineArray = []
 
 // We've provided a few variables below
 var savedCovers = [
   new Cover("http://3.bp.blogspot.com/-iE4p9grvfpQ/VSfZT0vH2UI/AAAAAAAANq8/wwQZssi-V5g/s1600/Do%2BNot%2BForsake%2BMe%2B-%2BImage.jpg", "Sunsets and Sorrows", "sunsets", "sorrows")
 ];
-var currentCover;
-var userNewBookCover;
-var homeCurrentCover;
-// var currentCustomCover = [];
+var currentCover
+var userNewBookCover
+var homeCurrentCover
+var taglineArray = []
+var displayViewSettings = {}
 
 // Add your event listeners here 👇
-showRandomCoverButton.addEventListener('click', displayNewCover);
-makeOwnCover.addEventListener('click', unhideFormView);
+showRandomCoverButton.addEventListener('click', displayNewCover)
+makeOwnCoverButton.addEventListener('click', unhideFormView)
 savedViewButton.addEventListener('click',() => {
-  unhideSavedView();
-  loadSavedCovers();
-});
-homeViewButton.addEventListener('click', unhideHomeView);
+  unhideSavedView()
+  loadSavedCovers()
+})
+
+homeViewButton.addEventListener('click', unhideHomeView)
 
 userCreateNewCoverButton.addEventListener('click',() => {
-  saveUserNewCoverData();
-  createUserNewCover();
-  unhideHomeView();
-});
+  saveUserNewCoverData()
+  createUserNewCover()
+  unhideHomeView()
+})
+
 saveCoverButton.addEventListener('click',() => {
-  saveCurrentCover();
+  saveCurrentCover()
   deleteDuplicateCover()
 
-});
-savedCoversSection.addEventListener('dblclick', removeCover, false);
+})
+
+savedCoversSection.addEventListener('dblclick', removeCover, false)
+
 // Create your event handlers and other functions here 👇
 function getRandomIndex(bookItem) {
   var randomIndex = Math.floor(Math.random() * bookItem.length)
@@ -73,31 +79,49 @@ function displayNewCover() {
 }
 
 function unhideFormView() {
-  savedView.style.display = 'none'
-  formView.style.display = 'block'
-  homeView.style.display = 'none'
-  showRandomCoverButton.style.display = 'none'
-  saveCoverButton.style.display = 'none'
-  homeViewButton.style.display = 'block'
-  clearFields()
+  displayViewSettings = {
+    savedView: 'none',
+    formView: 'block',
+    homeView: 'none',
+    showRandomCoverButton: 'none',
+    saveCoverButton: 'none',
+    homeViewButton: 'block',
+  }
+switchPageViewsSettings(displayViewSettings)
+clearFields()
 }
 
 function unhideSavedView() {
-  savedView.style.display = 'block'
-  homeView.style.display = 'none'
-  showRandomCoverButton.style.display = 'none'
-  saveCoverButton.style.display = 'none'
-  homeViewButton.style.display = 'block'
-  formView.style.display = 'none'
+  displayViewSettings = {
+    savedView: 'block',
+    formView: 'none',
+    homeView: 'none',
+    showRandomCoverButton: 'none',
+    saveCoverButton: 'none',
+    homeViewButton: 'block',
+  }
+  switchPageViewsSettings(displayViewSettings)
 }
 
 function unhideHomeView() {
-  savedView.style.display = 'none'
-  homeView.style.display = 'block'
-  showRandomCoverButton.style.display = 'block'
-  saveCoverButton.style.display = 'block'
-  homeViewButton.style.display = 'none'
-  formView.style.display = 'none'
+  displayViewSettings = {
+    savedView: 'none',
+    formView: 'block',
+    homeView: 'block',
+    showRandomCoverButton: 'block',
+    saveCoverButton: 'block',
+    homeViewButton: 'none',
+  }
+  switchPageViewsSettings(displayViewSettings)
+}
+
+function switchPageViewsSettings(displayViewSettings) {
+  savedView.style.display = displayViewSettings.savedView
+  formView.style.display = displayViewSettings.formView
+  homeView.style.display = displayViewSettings.homeView
+  showRandomCoverButton.style.display = displayViewSettings.showRandomCoverButton
+  saveCoverButton.style.display = displayViewSettings.saveCoverButton
+  homeViewButton.style.display = displayViewSettings.homeViewButton
 }
 
 function clearFields() {
@@ -138,39 +162,23 @@ function deleteDuplicateCover() {
 }
 
 function loadSavedCovers() {
-
   cleanViewCoversPage()
-
-  var coversList = savedCovers.map(function (element) { return element.cover; });
-  var coversTitle = savedCovers.map(function (element) { return element.title; });
-  var coversTagline1 = savedCovers.map(function (element) { return element.tagline1; });
-  var coversTagline2 = savedCovers.map(function (element) { return element.tagline2; });
-
-  for (var l = 0; l < coversList.length; l++){
-    var coverElement = coversList[l]
-    var titleElement = coversTitle[l]
-    var tagline1Element = coversTagline1[l]
-    var tagline2Element = coversTagline2[l]
-
+  savedCovers.forEach((cover, i) => {
     var miniCoverBlock =
-    `
-    <div class="mini-cover">
-      <img class="mini-cover" src="${coverElement}">
-      <h2 class="cover-title cover-title::first-letter">${titleElement}</h2>
-      <h3 class="tagline">A tale of ${tagline1Element} and ${tagline2Element}</h3>
-    </div>
-    `
-    savedCoversSection.insertAdjacentHTML("afterbegin", miniCoverBlock)
-  }
+     `
+      <div data-id="${cover.id}" class="mini-cover">
+        <img class="mini-cover" src="${cover.cover}">
+        <h2 class="cover-title cover-title::first-letter">${cover.title}</h2>
+        <h3 class="tagline">A tale of ${cover.tagline1} and ${cover.tagline2}</h3>
+      </div>
+      `
+      savedCoversSection.insertAdjacentHTML("afterbegin", miniCoverBlock)
+  })
 }
 
 function cleanViewCoversPage() {
         savedCoversSection.innerHTML = ""
 }
-
-// saveCurrentCover() for saving current homepage cover into savedCovers array
-// splitTagline() pushed descriptors into array, this fxn uses them and
-// then cleans the array out with .splice()
 
 function saveCurrentCover() {
   splitTagline()
@@ -181,9 +189,8 @@ function saveCurrentCover() {
 
 function cleanTempArrays() {
   taglineArray.splice(0,2)
-  // currentCustomCover.splice(0,1)
 }
-// splitTagline() fxn inside of saveCurrentCover(). split tagline to save desc1 and desc2
+
 function splitTagline() {
   var taglineWordCount = coverTagline.textContent.split(" ")
   return taglineArray.push(taglineWordCount[3], taglineWordCount[5])
@@ -191,9 +198,11 @@ function splitTagline() {
 
 function removeCover(element) {
   if (element.target !== element.currentTarget) {
-        var clickedItem = document.querySelector('.mini-cover');
-        clickedItem.remove();
-    }
-    element.stopPropagation();
+        var clickedItem = document.querySelector('.mini-cover')
+        clickedItem.remove()
+  }
+    element.stopPropagation()
 }
-displayNewCover();
+
+
+displayNewCover()
